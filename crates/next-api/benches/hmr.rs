@@ -435,28 +435,38 @@ fn bench_update(bencher: divan::Bencher, module_count: usize, num_updates: usize
             let setup = s.clone();
 
             setup.clone().rt.block_on(async move {
-                setup.clone().tt.run_once(Box::pin(async move {
-                    let _ = setup
-                        .benchmark
-                        .benchmark_initial_compilation()
-                        .await
-                        .unwrap();
-                    Ok(())
-                }));
+                setup
+                    .clone()
+                    .tt
+                    .run_once(Box::pin(async move {
+                        let _ = setup
+                            .benchmark
+                            .benchmark_initial_compilation()
+                            .await
+                            .unwrap();
+                        Ok(())
+                    }))
+                    .await
+                    .unwrap();
             });
 
             s.clone()
         })
         .bench_values(|setup| {
             setup.clone().rt.block_on(async move {
-                setup.clone().tt.run_once(Box::pin(async move {
-                    setup
-                        .benchmark
-                        .benchmark_hmr_update(num_updates)
-                        .await
-                        .unwrap();
-                    Ok(())
-                }));
+                setup
+                    .clone()
+                    .tt
+                    .run_once(Box::pin(async move {
+                        setup
+                            .benchmark
+                            .benchmark_hmr_update(num_updates)
+                            .await
+                            .unwrap();
+                        Ok(())
+                    }))
+                    .await
+                    .unwrap();
             })
         });
 }
