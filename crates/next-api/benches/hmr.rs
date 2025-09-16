@@ -411,7 +411,7 @@ fn setup_everything(module_count: usize) -> Arc<Setup> {
 
     let arc = rt.clone().block_on(async move {
         tt.clone()
-            .run_once(async move {
+            .run(async move {
                 let benchmark = setup_benchmark(module_count).await;
                 benchmark.benchmark_initial_compilation().await.unwrap();
 
@@ -438,7 +438,7 @@ fn bench_update(bencher: divan::Bencher, module_count: usize, num_updates: usize
                 setup
                     .clone()
                     .tt
-                    .run_once(Box::pin(async move {
+                    .run(Box::pin(async move {
                         let _ = setup
                             .benchmark
                             .benchmark_initial_compilation()
@@ -457,7 +457,7 @@ fn bench_update(bencher: divan::Bencher, module_count: usize, num_updates: usize
                 setup
                     .clone()
                     .tt
-                    .run_once(Box::pin(async move {
+                    .run(Box::pin(async move {
                         setup
                             .benchmark
                             .benchmark_hmr_update(num_updates)
